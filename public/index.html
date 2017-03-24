@@ -1,0 +1,101 @@
+<!-- index.html -->
+<!doctype html>
+<html>
+<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+
+<title>ListenUp</title>
+
+</head>
+<body>
+	<div class="flex-container">
+		<div class="flex-item">
+			<h2 id="pageTitle">Playlist</h2>
+			
+			<div id="playerContainer">
+				<audio autoplay controls src="" id="player"></audio>
+			</div>
+			
+			<div id="liveSong"></div>
+			<br>
+			<div id="nextSongBtn" onclick="emitNextSong();">
+				<h4>Next Song</h4>
+			</div>
+
+		</div>
+	
+		<div class="flex-item">
+			<h2>Chat</h2>
+			<ul id="messages"></ul>
+			<form action="" class="form-inline">
+				<input id="chat_input" autocomplete="off" />
+				<input type="submit" id="subMsg" value="Send">
+			</form>
+		</div>
+	</div>
+
+	<div class="tabs">
+		<ul class="tab-links">
+			<li class="active"><a href="#playlist"  onclick="show('playlist');">Playlist</a></li>
+			<li><a href="#sounbank" onclick="show('sounbank');">SoundBank</a></li>
+			<li><a href="#tab3" onclick="show('tab3');">Add an Song to the Bank</a></li>
+		</ul>
+
+		<div class="tab-content">
+
+			<div id="playlist" class="tab active">
+				<table>
+					<thead>	
+						<tr>
+							<th id="playOrder">Play Order</th>
+							<th id="song">Song Name (Next is n°1)</th>
+							<th id="artist">Artist</th>
+							<th id="client" colspan="2">Client which added the song</th>
+						</tr>
+					</thead>
+					<tbody id="tbody1"></tbody>
+				</table>
+			</div>
+
+			<div id="sounbank" class="tab">
+				<table>
+					<thead>	
+						<tr>
+							<th id="song">Song Name</th>
+							<th id="artist">Artist</th>
+							<th id="client" colspan="2">Client which added the song</th>
+						</tr>
+					</thead>
+					<tbody id="tbody2"></tbody>
+				</table>
+			</div>
+
+			<div id="tab3" class="tab" >
+
+				<iframe name="hiddenFrame" style="position:absolute; top:-1px; left:-1px; width:1px; height:1px;"></iframe>*
+				<div id="file_upload"></div>
+
+				<span style="margin-left: 25px; margin-top: 0;">
+					<form id = "uploadForm" enctype="multipart/form-data" action = "upload" method = "post" target="hiddenFrame">
+						Your Song:
+						<input class="input-file" id="up_song" name="a" type="file">
+						<label for="up_song" class="input-file-trigger" tabindex="0">Browse</label>
+						<span class="file_return" id="file_return"></span>
+
+						<input type="submit" value="Upload File" name="submit">
+					</form>
+				</span>
+			</div>
+
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/javascripts/main.js"></script>
+	<script src="/javascripts/chat.js"></script>
+	<script src="/javascripts/play.js"></script>
+	<script src="/javascripts/upload.js"></script>
+
+</body>
+
+</html>
