@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var app = require('../app');
-var debug = require('debug')('infiniteplaylist:server');
+var debug = require('debug')('ListenUp:server');
+var mod = require('../own_modules/mod');
 
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);

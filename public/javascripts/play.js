@@ -6,12 +6,15 @@
 var musicPath = "C:\\Users\\Arthur\\Music";
 
 var player = document.getElementById("player");
+//var countPlaylist = 0;
 
 // Sends a message requesting to go to the next song
 function emitNextSong() {
 	// Remove the top song from the playlist (currently playing)
 	var str = document.getElementById('liveSong').innerHTML;
 	removeFromPlaylist(str.toString());
+	document.getElementById('liveSong').innerHTML = "";
+	//countPlaylist --;
 
 	// Send the message to server
 	socket.emit('next song', 'next song');
@@ -36,11 +39,11 @@ function play(songName) {
 };
 
 function removeFromPlaylist(song) {
+	//countPlaylist --;
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', "/removeFromPlaylist/"+song);
 	xhr.addEventListener('readystatechange', function() {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) { 
-			console.log(xhr.responseText+" has been removed to the playlist");
 			getTablePlaylist();
 		}
 	});
@@ -57,7 +60,7 @@ function startStream() {
 				console.log("Current Song is: "+ xhr.responseText);
 				play(xhr.responseText); 
 				document.getElementById('liveSong').innerHTML = xhr.responseText;
-				return xhr.responseText;
+				//return xhr.responseText;
 			}
 			else{
 				console.log("No song in the playlist")
@@ -95,13 +98,13 @@ function getTableSoundBank() {
 };
 
 function addToPlaylist(song) {
+	socket.emit('new song', song);
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', "/addToPlaylist/"+song);
 	xhr.addEventListener('readystatechange', function() {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) { 
-			console.log(xhr.responseText+" has been added to the playlist");
 			if (document.getElementById('liveSong').innerHTML == "") {
-				startStream();
+				nextSong();
 			}
 		}
 	});
