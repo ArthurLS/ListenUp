@@ -10,86 +10,97 @@ var io = require('socket.io')(server);
 var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
+// Creating variables //
+var soundbank = mod.soundbank;
+var playlist = mod.playlist;
 
 server.listen(port, function(){
-  console.log('Listening on *:'+port);
+	console.log('Listening on *:'+port);
 }); 
 server.on('error', onError);
 server.on('listening', onListening);
 
+var currentSong = "No song in the playlist";
 
-var clientCount = 0;
 // Handles Socket.io interactions
 io.on('connection', function(socket){ 
-  io.of('/').clients(function(error, clients){
-    if (error) throw error;
-    clientCount++;
-    console.log("Client Count = "+clientCount+ " Client List: " +clients); // => [PZDoMHjiu8PYfRiKAAAF, Anw2LatarvGVVXEIAAAD] 
-  });
 
-  io.emit('chat message', "A user connected");
+	io.emit('chat message', socket.id+" connected");
 
-  socket.on('disconnect', function(){
-    io.emit('chat message', "A user deconnected");
-    clientCount--;
-  });
+	io.emit('current song', currentSong);
 
-  socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
+	socket.on('disconnect', function(){
+		io.emit('chat message', "A user deconnected");
+	});
 
-  socket.on('next song', function(){
-    console.log('NEXT SONG');
-    io.emit('next song', 'next song');
-  });
+	socket.on('chat message', function(msg){
+		console.log('message: ' + msg);
+		io.emit('chat message', msg);
+	});
+
+	socket.on('server play next song', function(){
+		if(typeof playlist[0] != "string"){
+			io.emit("chat message", "No song, can't Play");
+		}
+		else{
+			currentSong = playlist[0];
+			mod.removeFromPlaylist(currentSong);
+			io.emit('play', currentSong);
+		}
+	});
+
+	socket.on('play', function(song){
+		currentSong = song;
+		io.emit('play', song);
+	});
+
 });
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+ function normalizePort(val) {
+ 	var port = parseInt(val, 10);
 
-  if (isNaN(port)) {
+ 	if (isNaN(port)) {
     // named pipe
     return val;
-  }
+}
 
-  if (port >= 0) {
+if (port >= 0) {
     // port number
     return port;
-  }
+}
 
-  return false;
+return false;
 }
 
 /**
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+ function onError(error) {
+ 	if (error.syscall !== 'listen') {
+ 		throw error;
+ 	}
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+ 	var bind = typeof port === 'string'
+ 	? 'Pipe ' + port
+ 	: 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
+  	case 'EACCES':
+  	console.error(bind + ' requires elevated privileges');
+  	process.exit(1);
+  	break;
+  	case 'EADDRINUSE':
+  	console.error(bind + ' is already in use');
+  	process.exit(1);
+  	break;
+  	default:
+  	throw error;
   }
 }
 
@@ -97,10 +108,10 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+ function onListening() {
+ 	var addr = server.address();
+ 	var bind = typeof addr === 'string'
+ 	? 'pipe ' + addr
+ 	: 'port ' + addr.port;
+ 	debug('Listening on ' + bind);
+ }

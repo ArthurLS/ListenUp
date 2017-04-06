@@ -10,7 +10,7 @@ Prerequisite: node.js installed
 ```bash
 $ git clone https://github.com/ArthurLS/ListenUp.git
 $ npm install
-$ node index.js
+$ npm start
 ```
 Now that the server is running, connect to localhost:PORT.
 

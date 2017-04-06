@@ -1,4 +1,4 @@
-// index.js //
+// routes.js //
 var express = require('express');
 var router = express.Router();
 var mod = require('../own_modules/mod');
@@ -32,7 +32,6 @@ var upload = multer({ storage: storage });
 
 router.post('/upload', upload.any(), function (req, res, next) {
 	console.log("I'm in post");
-	//io.emit('upload', "file uploaded");
 	res.send();
 });
 
@@ -45,11 +44,18 @@ router.get('/getTablePlaylist',function(req,res){
 });
 
 // Handle request to add and remove one song
-router.get('/addToPlaylist/:song',function(req,res){
-	var addSong = req.params.song;
-	console.log("User want "+addSong+" to be added!");
-	mod.addToPlaylist(addSong);
-	res.send(addSong+"Has been added");
+router.get('/addToPlaylist/:song/:isSongPlaying',function(req,res){
+	var song = req.params.song;
+	var bool = (req.params.isSongPlaying == 'true');
+
+	if(!bool){ // If not Playing
+		res.send(song);	
+	}
+	else{
+		console.log("Song has been added to the playlist");
+		mod.addToPlaylist(song);
+		res.send("song added");
+	}
 });
 router.get('/removeFromPlaylist/:song',function(req,res){
 	var rmSong = req.params.song;

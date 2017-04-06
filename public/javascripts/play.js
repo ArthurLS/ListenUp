@@ -6,48 +6,27 @@
 var musicPath = "C:\\Users\\Arthur\\Music";
 
 var player = document.getElementById("player");
-//var countPlaylist = 0;
 
-// Sends a message requesting to go to the next song
+
+// Respond to the Next Song button
 function emitNextSong() {
-	// Remove the top song from the playlist (currently playing)
-	var str = document.getElementById('liveSong').innerHTML;
-	removeFromPlaylist(str.toString());
-	document.getElementById('liveSong').innerHTML = "";
-	//countPlaylist --;
-
-	// Send the message to server
-	socket.emit('next song', 'next song');
+	socket.emit('server play next song');
 }
 
+// Listen to the end of a song
 player.onended = function() {
 	emitNextSong();
 };
 
-// Listen to the server to play the next song
-socket.on('next song', function(){
-	nextSong();
-});
-function nextSong() {
-	// Plays the first dong in the playlist
-	startStream();
+// Server sends the song to play
+socket.on('play', function(song) {
+	play(song);
 	getTablePlaylist();
-};
+})
 
-function play(songName) {
-	document.getElementById('player').src = songName;
-};
-
-function removeFromPlaylist(song) {
-	//countPlaylist --;
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', "/removeFromPlaylist/"+song);
-	xhr.addEventListener('readystatechange', function() {
-		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) { 
-			getTablePlaylist();
-		}
-	});
-	xhr.send();
+function play(song) {
+	document.getElementById('player').src = song;
+	document.getElementById('liveSong').innerHTML = song;
 };
 
 // Plays the top song of the playlist
@@ -56,15 +35,12 @@ function startStream() {
 	xhr.open('GET', "/startStream");
 	xhr.addEventListener('readystatechange', function() {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+			console.log("isPlaying: "+isPlaying);
 			if(xhr.responseText != "No song in the playlist"){
-				console.log("Current Song is: "+ xhr.responseText);
-				play(xhr.responseText); 
-				document.getElementById('liveSong').innerHTML = xhr.responseText;
-				//return xhr.responseText;
+				play(xhr.responseText);
 			}
-			else{
-				console.log("No song in the playlist")
-			}
+			console.log("here: "+xhr.responseText);
+			document.getElementById('liveSong').innerHTML = xhr.responseText;
 		}
 	});
 	xhr.send();
@@ -98,14 +74,38 @@ function getTableSoundBank() {
 };
 
 function addToPlaylist(song) {
-	socket.emit('new song', song);
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', "/addToPlaylist/"+song);
+	if(document.getElementById('liveSong').innerHTML == "No song in the playlist"){ 
+		var isSongPlaying = false;
+	}	
+	else var isSongPlaying = true;
+	
+	console.log("IS SONG PLAYING: "+ isSongPlaying);
+	console.log("IS SONG LIVESONG: "+ document.getElementById('liveSong').innerHTML);
+
+	xhr.open('GET', "/addToPlaylist/"+song+"/"+isSongPlaying);
 	xhr.addEventListener('readystatechange', function() {
 		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) { 
-			if (document.getElementById('liveSong').innerHTML == "") {
-				nextSong();
+			console.log(xhr.responseText+" = MESSAGE RECIEVED");
+			if (xhr.responseText != "song added"){
+				socket.emit("chat message", "No song, Must Play" + xhr.responseText);
+				socket.emit("play", xhr.responseText);
 			}
+			else{
+				console.log("Song has been added to the playlist");
+			}
+			
+		}
+	});
+	xhr.send();
+};
+
+function removeFromPlaylist(song) {
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', "/removeFromPlaylist/"+song);
+	xhr.addEventListener('readystatechange', function() {
+		if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) { 
+			getTablePlaylist();
 		}
 	});
 	xhr.send();

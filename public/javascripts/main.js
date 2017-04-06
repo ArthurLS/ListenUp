@@ -4,7 +4,6 @@ var socket = io.connect('http://localhost:4000');
 
 $(window).on('load', function() {
 	getTablePlaylist();
-	startStream();
 });
 
 // Switches tabs: hide + init page

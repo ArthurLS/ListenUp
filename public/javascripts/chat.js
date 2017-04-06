@@ -5,7 +5,8 @@
 ///////////////////////////////////////////////////////////////////////
 
 var msgInChat = 0;
-var alterBackMessage =0;
+var alternMessage =0;
+var firstSong = true;
 
 // Sends the message to the server when submitted
 $('#subMsg').click(function(){
@@ -15,8 +16,8 @@ $('#subMsg').click(function(){
 });
 // Listen to chat messages from the server (andd writes them)
 socket.on('chat message', function(msg){
-	alterBackMessage++;
-	if (alterBackMessage%2 == 0) {
+	alternMessage++;
+	if (alternMessage%2 == 0) {
 		$('#messages').append($('<li class="msg" style="background: white;">').text(msg));
 	}
 	else{
@@ -27,6 +28,14 @@ socket.on('chat message', function(msg){
 		delOldMessage();
 	}
 });
+
+socket.on('current song', function(curSong){
+	if(firstSong){
+		play(curSong);
+		firstSong = false;
+	}
+});
+
 
 // Limit the number of message displayed
 function delOldMessage() {
