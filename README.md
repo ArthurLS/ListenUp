@@ -14,10 +14,10 @@ In the folder of your choice<br/>
 $ git clone https://github.com/ArthurLS/ListenUp.git
 $ npm install
 $ npm start
-```<br/>
+```
 Now that the server is running, connect to localhost:PORT. (default is 4000)
 
-Click on the SounBank tab to see your songs and add some to the commun playlist!<br/>
+Click on the SounBank tab to see your songs and add some to the shared playlist!<br/>
 All the client have the same playlist.
 
 ---
