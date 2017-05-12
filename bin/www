@@ -2,18 +2,22 @@
 
 var app = require('../app');
 var debug = require('debug')('ListenUp:server');
+
+// A lot the the functions used here are actually defined in this file
 var mod = require('../own_modules/mod');
 
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-var port = normalizePort(process.env.PORT || '4000');
-app.set('port', port);
-
 // Creating variables //
 var soundbank = mod.soundbank;
 var playlist = mod.playlist;
 
+
+var port = normalizePort(process.env.PORT || '4000');
+app.set('port', port);
+
+// Creates the server that listens to the port 4000
 server.listen(port, function(){
 	console.log('Listening on *:'+port);
 }); 
@@ -23,6 +27,7 @@ server.on('listening', onListening);
 var currentSong = "No song in the playlist";
 
 // Handles Socket.io interactions
+// Socket.io is also used to talk with the server, ex: wether to play a song or not
 io.on('connection', function(socket){ 
 
 	io.emit('chat message', socket.id+" connected");
@@ -48,7 +53,6 @@ io.on('connection', function(socket){
 			io.emit('play', currentSong);
 		}
 	});
-
 	socket.on('play', function(song){
 		currentSong = song;
 		io.emit('play', song);

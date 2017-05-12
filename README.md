@@ -3,27 +3,22 @@ Audio streaming server
 
 ---
 ### How to setup
-Change your music path (var musicPath), mine "C:\\Users\\Arthur\\Music"
+Your music path is where you want the server to get your songs from. Default is ./upload
+Change your music path: const <musicPath> defined in own_modules/mod.js
 Care for song with special characters (space, ', ", é ...)
 
 Prerequisite: node.js installed
+
+In the folder of your choice
 ```bash
 $ git clone https://github.com/ArthurLS/ListenUp.git
 $ npm install
 $ npm start
 ```
-Now that the server is running, connect to localhost:PORT.
+Now that the server is running, connect to localhost:PORT. (default is 4000)
 
-Click on the SounBank tab and the music starts!
+Click on the SounBank tab to see your songs and add some to the commun playlist!
 All the client have the same playlist.
-
----
-### ToDo List:
-- [x] Synch the client listening (like a radio)
-- [x] Allow to upload music
-- [ ] Support scaling
-- [ ] Fault tolerance and recovery
-- [ ] Beautify the whole thing
 
 ---
 ### License

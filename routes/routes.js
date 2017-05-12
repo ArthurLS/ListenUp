@@ -1,17 +1,24 @@
 // routes.js //
+// Handle the request from the clients //
+
 var express = require('express');
 var router = express.Router();
-var mod = require('../own_modules/mod');
 var fs = require('fs');
+var multer = require('multer');
+
+// A lot the the functions used here are actually defined in this file
+var mod = require('../own_modules/mod');
+
 
 // Creating variables //
 var soundbank = mod.soundbank;
 var playlist = mod.playlist;
 var musicPath = mod.musicPath;
 
+// Creates the list of songs from your local files
 mod.createSoundBank();
 
-var multer = require('multer');
+
 // Handles the upload of a file in ./uploads folder //
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -35,13 +42,15 @@ router.post('/upload', upload.any(), function (req, res, next) {
 	res.send();
 });
 
-// Handles function related request from the client
+
+// Handles HTML render request
 router.get('/getTableSoundBank',function(req,res){
-    res.send(mod.formatSoundBankHTML(soundbank));
+	res.send(mod.formatSoundBankHTML(soundbank));
 });
 router.get('/getTablePlaylist',function(req,res){
 	res.send(mod.formatPlaylistHTML(playlist));
 });
+
 
 // Handle request to add and remove one song
 router.get('/addToPlaylist/:song/:isSongPlaying',function(req,res){
@@ -63,8 +72,9 @@ router.get('/removeFromPlaylist/:song',function(req,res){
 	mod.removeFromPlaylist(rmSong);
 });
 
-// startStream fills in <audio src="***.mp3"> with top playlist song
-// src="***.mp3" then sends automatically a GET which starts the stream
+
+// startStream fills in <audio src="***.mp3"> with the top playlist song
+// src="***.mp3" then sends automatically a GET request which starts the stream
 router.get('/startStream',function(req,res){
 	if (typeof playlist[0] != "string"){
 		res.send("No song in the playlist");
@@ -73,6 +83,7 @@ router.get('/startStream',function(req,res){
 		res.send(playlist[0]);
 	}
 });
+//answers src"***.mp3" from the client
 router.get('/*.mp3',function(req,res){
 	console.log("SONG ASKED: "+req.url);
 
@@ -82,6 +93,7 @@ router.get('/*.mp3',function(req,res){
 	})
 	.pipe(res);
 });
+
 
 // Request not handled
 router.use(function(req, res, next) {

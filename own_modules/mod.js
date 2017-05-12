@@ -1,21 +1,20 @@
 /*methods.js*/
+// This is where all the global functions are created and exported
 var fs = require('fs');
 
 // Creating variables //
 var soundbank = [];
 var playlist = [];
 const musicPath = "C:\\Users\\Arthur\\Music";
-
 // export them
 exports.soundbank = soundbank;
 exports.playlist = playlist;
 exports.musicPath = musicPath;
 
-	// Creates the sound bank based on musics in musicPath
+// Creates the sound bank based on musics in musicPath
 function parseExtension(url) {
 	return url.split('.').pop();
 };
-   
 exports.parseExtension = function(url) {
 	return url.split('.').pop();
 };
@@ -75,8 +74,4 @@ exports.formatPlaylistHTML = function(list) {
 		'<td headers="client" style="cursor: pointer;" onclick="removeFromPlaylist(\''+list[i]+'\'); getTablePlaylist();">Remove song from The Playlist</td></tr>';
 	}
 	return result;
-};
-
-exports.test1 = function(text) {
-	console.log("Here is the text you want to print: "+text);
 };
