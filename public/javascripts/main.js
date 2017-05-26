@@ -6,28 +6,23 @@ $(window).on('load', function() {
 	getTablePlaylist();
 });
 
-// Switches tabs: hide + init page
-$(document).ready(function() {
-	$('.tabs .tab-links a').on('click', function(e)  {
-		var currentAttrValue = jQuery(this).attr('href');
-		// Show/Hide Tabs
-		jQuery('.tabs ' + currentAttrValue).show().siblings().hide();
-		// Change/remove current tab to active
-		jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
-		e.preventDefault();
-	});
-});
+$('#myTab a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
 
 function show(tab) {
 	if(tab == "sounbank"){
 		getTableSoundBank();
 		document.getElementById('pageTitle').innerHTML = "SoundBank";
 	}
-	else{
+	else if(tab == "playlist"){
 		getTablePlaylist();
 		if (document.getElementById('liveSong').innerHTML == "") {
 			startStream();
 		}
+	}
+	else{
 	}
 	return false;
 };

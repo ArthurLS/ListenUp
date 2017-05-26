@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
 <title>ListenUp</title>
 
@@ -15,7 +16,7 @@
 				<audio autoplay controls src="" id="player"></audio>
 			</div>
 			
-			<div id="liveSong"></div>
+			<div id="liveSong" class="alert alert-success"></div>
 			<br>
 
 			<div id="nextSongBtn" onclick="emitNextSong();">
@@ -23,53 +24,62 @@
 			</div>
 		</div>
 
+
 		<div class="flex-item">
 			<h2>Chat</h2>
 			<ul id="messages"></ul>
-			<form action="" class="form-inline">
-				<input id="chat_input" autocomplete="off" />
-				<input type="submit" id="subMsg" value="Send">
+			<form action="" class="form-inline form-group">
+				<input id="chat_input" autocomplete="off" class="form-control"/>
+				<input type="submit" class="form-control" id="subMsg" value="Send">
 			</form>
 		</div>
+
 	</div>
 
-	<div class="tabs">
-		<ul class="tab-links">
-			<li class="active"><a href="#playlist"  onclick="show('playlist');">Playlist</a></li>
-			<li><a href="#sounbank" onclick="show('sounbank');">SoundBank</a></li>
-			<li><a href="#tab3" onclick="show('tab3');">Add an Song to the Bank</a></li>
+	<div class="tabs" style="margin-left: 9px; margin-right: 9px">
+		<ul id="myTab" class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link active" href="#playlist" onclick="show('playlist');">Playlist</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#sounbank" onclick="show('sounbank');">Soundbank</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#upload" onclick="show('upload');">Upload a Song</a>
+			</li>
 		</ul>
 
-		<div class="tab-content">
 
-			<div id="playlist" class="tab active">
-				<table>
-					<thead>	
+		<div class="tab-content">
+			<div id="playlist" class="tab-pane active">
+				<table class="table table-striped custab">
+					<thead>
 						<tr>
 							<th id="playOrder">Play Order</th>
 							<th id="song">Song Name (Next is n°1)</th>
 							<th id="artist">Artist</th>
-							<th id="client" colspan="2">Client which added the song</th>
+							<th id="removeSong">Remove the song</th>
 						</tr>
 					</thead>
-					<tbody id="tbody1"></tbody>
+					<tbody id="tbody1">
+					</tbody>
 				</table>
 			</div>
 
-			<div id="sounbank" class="tab">
-				<table>
+			<div id="sounbank" class="tab-pane">
+				<table class="table table-striped custab">
 					<thead>	
 						<tr>
 							<th id="song">Song Name</th>
 							<th id="artist">Artist</th>
-							<th id="client" colspan="2">Client which added the song</th>
+							<th id="addSong">Add a song</th>
 						</tr>
 					</thead>
 					<tbody id="tbody2"></tbody>
 				</table>
 			</div>
 
-			<div id="tab3" class="tab" >
+			<div id="upload" class="tab-pane" >
 
 				<iframe name="hiddenFrame" style="position:absolute; top:-1px; left:-1px; width:1px; height:1px;"></iframe>*
 				<div id="file_upload"></div>
@@ -87,14 +97,20 @@
 			</div>
 
 		</div>
-	</div>
 
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="/javascripts/main.js"></script>
-	<script src="/javascripts/chat.js"></script>
-	<script src="/javascripts/play.js"></script>
-	<script src="/javascripts/upload.js"></script>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/main.js"></script>
+<script src="/javascripts/chat.js"></script>
+<script src="/javascripts/play.js"></script>
+<script src="/javascripts/upload.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 </body>
 

@@ -22,12 +22,14 @@ mod.createSoundBank();
 // Handles the upload of a file in ./uploads folder //
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, 'uploads/');
+		cb(null, 'C:\\Users\\Arthur\\Music');
 	},
 	filename: function (req, file, cb) {
 		console.log(file.originalname);
 		if (file.mimetype == "audio/mp3") {
 			cb(null, file.originalname);
+			// Creates the list of songs from your local files
+			mod.createSoundBank();
 		}
 		else{
 			cb(new Error('File format is not mp3'))

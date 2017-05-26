@@ -47,15 +47,11 @@ exports.removeFromPlaylist = function(song) {
 exports.formatSoundBankHTML = function(songs) {
 	var result ="";
 	for (var i = 0; i < songs.length; i++) {
-		if (i%2 == 0) {
-			var background = "white";
-		}
-		else var background = "lightgrey";
 
-		result += '<tr style="background: '+background+';" id="orderID_'+i+'"><td headers="song">'+songs[i]+'</td>'+
-		'<td headers="artist">Artist (parsage pas fait)</td>'+
-		'<td headers="client">Client</td>'+
-		'<td headers="client" style="cursor: pointer;" onclick="addToPlaylist(\''+songs[i]+'\');">Add song to The Playlist</td></tr>';
+		result += '<tr id="orderID_'+i+'">'+
+		'<td >'+songs[i]+'</td>'+
+		'<td>Artist (parsage pas fait)</td>'+
+		'<td style="cursor: pointer;" onclick="addToPlaylist(\''+songs[i]+'\');"> <img class="imgAddRm" src="/img/add_song.png"> </td></tr>';
 	}
 	return result;
 };
@@ -63,15 +59,11 @@ exports.formatSoundBankHTML = function(songs) {
 exports.formatPlaylistHTML = function(list) {
 	var result ="";
 	for (var i = 0; i < list.length; i++) {
-		if (i%2 == 0) var background = "white";
 
-		else var background = "lightgrey";
-
-		result += '<tr style="background: '+background+';" id="orderID_'+i+'">'+'<td headers="playOrder">'+(i+1)+'</td>'+
-		'<td headers="song">'+list[i]+'</td>'+
-		'<td headers="artist">Artist (parsage pas fait)</td>'+
-		'<td headers="client">Client</td>'+
-		'<td headers="client" style="cursor: pointer;" onclick="removeFromPlaylist(\''+list[i]+'\'); getTablePlaylist();">Remove song from The Playlist</td></tr>';
+		result += '<tr id="orderID_'+i+'">'+'<td >'+(i+1)+'</td>'+
+		'<td>'+list[i]+'</td>'+
+		'<td>Regarde la chanson bolosse</td>'+
+		'<td style="cursor: pointer;" onclick="removeFromPlaylist(\''+list[i]+'\'); getTablePlaylist();"><img class="imgAddRm" src="/img/rm_song.png"></td></tr>';
 	}
 	return result;
 };
