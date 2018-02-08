@@ -1,6 +1,6 @@
 /* main.js */
 
-var socket = io.connect('http://localhost:4000');
+var socket = io();
 
 $(window).on('load', function() {
 	getTablePlaylist();

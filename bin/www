@@ -14,10 +14,10 @@ var soundbank = mod.soundbank;
 var playlist = mod.playlist;
 
 
-var port = normalizePort(process.env.PORT || '4000');
+var port = normalizePort(process.env.PORT || '80');
 app.set('port', port);
 
-// Creates the server that listens to the port 4000
+// Creates the server that listens to the port 80
 server.listen(port, function(){
 	console.log('Listening on *:'+port);
 }); 
